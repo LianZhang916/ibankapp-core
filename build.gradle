@@ -1,9 +1,20 @@
 apply plugin: 'java'
 
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 1, 'minutes'
+}
+
 repositories {
     mavenCentral()
+    maven {
+        url "http://123.56.45.216:8081/nexus/content/repositories/snapshots"
+    }
+    maven {
+        url "http://123.56.45.216:8081/nexus/content/repositories/releases"
+    }
 }
 
 dependencies{
     compile 'javax.persistence:persistence-api:1.0.2'
+    compile 'org.ibankapp:ibankapp-base:1.0.0-SNAPSHOT'
 }

@@ -2,6 +2,8 @@ package org.ibankapp.core.model;
 
 import javax.persistence.MappedSuperclass;
 
+import org.ibankapp.base.persistence.Model;
+
 /**
  * 客户实体类的超类
  *
@@ -10,11 +12,17 @@ import javax.persistence.MappedSuperclass;
  * @author         codelder
  */
 @MappedSuperclass
-public class Customer {
+public class Customer extends Model {
 
-    /** Field description */
+    /** 证件种类 */
     private String idtp;
 
-    /** Field description */
+    /** 证件号码 */
     private String idno;
+
+    /** 客户姓名 */
+    private String name;
 }
+
+
+//~ Formatted by Jindent --- http://www.jindent.com
