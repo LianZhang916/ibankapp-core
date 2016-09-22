@@ -17,4 +17,6 @@ repositories {
 dependencies{
     compile 'javax.persistence:persistence-api:1.0.2'
     compile 'org.ibankapp:ibankapp-base:1.0.0-SNAPSHOT'
+    testCompile 'junit:junit:4.11'
+    testCompile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.11.Final'
 }
