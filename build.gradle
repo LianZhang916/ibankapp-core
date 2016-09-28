@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.cacheChangingModulesFor 1, 'minutes'
+}
+
+repositories {
+    mavenCentral()
+    maven {
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
+    }
+}
+
+dependencies{
+    compile 'org.ibankapp:ibankapp-base:1.0.0-SNAPSHOT'
+    testCompile 'junit:junit:4.11'
+    testCompile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.11.Final'
+    testCompile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.192'
+}
