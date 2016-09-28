@@ -9,11 +9,6 @@ allprojects {
     }
 }
 
-jacocoTestReport {
-    reports {
-        xml.enabled true
-    }
-}
 
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 1, 'minutes'
@@ -33,3 +28,12 @@ dependencies{
     testCompile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.192'
 }
+
+jacocoTestReport {
+    reports {
+        xml.enabled = true
+        html.enabled = true
+    }
+}
+
+check.dependsOn jacocoTestReport
