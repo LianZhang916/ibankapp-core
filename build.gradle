@@ -12,9 +12,6 @@ configurations.all {
     resolutionStrategy.cacheChangingModulesFor 1, 'minutes'
 }
 
-sourceCompatibility =1.6
-targetCompatibility =1.6
-
 repositories {
     mavenCentral()
     maven {
