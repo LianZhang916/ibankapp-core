@@ -1,5 +1,13 @@
 apply plugin: 'java'
 
+allprojects {
+    gradle.projectsEvaluated {
+        tasks.withType(JavaCompile) {
+            options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+        }
+    }
+}
+
 configurations.all {
     resolutionStrategy.cacheChangingModulesFor 1, 'minutes'
 }
@@ -7,16 +15,14 @@ configurations.all {
 repositories {
     mavenCentral()
     maven {
-        url "http://123.56.45.216:8081/nexus/content/repositories/snapshots"
-    }
-    maven {
-        url "http://123.56.45.216:8081/nexus/content/repositories/releases"
+        url "https://oss.sonatype.org/content/repositories/snapshots/"
     }
 }
 
 dependencies{
-    compile 'javax.persistence:persistence-api:1.0.2'
     compile 'org.ibankapp:ibankapp-base:1.0.0-SNAPSHOT'
     testCompile 'junit:junit:4.11'
     testCompile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.11.Final'
+    testCompile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.192'
 }
