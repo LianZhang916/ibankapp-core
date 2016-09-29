@@ -1,3 +1,3 @@
 # [ibankapp-core] (http://www.ibankapp.org) 
-[![Build Status](https://api.travis-ci.org/ibankapp/ibankapp-core.svg?branch=develop)](https://travis-ci.org/ibankapp/ibankapp-core)<br/>
+[![Travis branch](https://img.shields.io/travis/ibankapp/ibankapp-core/master.svg?maxAge=2592000?style=flat-square)]()<br/>
 ibankapp 核心账务模块
