@@ -1,5 +1,9 @@
 package org.ibankapp.core.service.impl;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
 import org.ibankapp.base.persistence.IJpaDao;
 import org.ibankapp.core.model.CorpCustomer;
 import org.ibankapp.core.model.Customer;
@@ -7,9 +11,6 @@ import org.ibankapp.core.model.RetailCustomer;
 import org.ibankapp.core.service.ICustomerService;
 import org.ibankapp.core.type.CustomerType;
 import org.ibankapp.core.type.Idtp;
-
-import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * 默认客户信息服务类
@@ -44,7 +45,7 @@ public class DefaultCustomerService implements ICustomerService {
         customer.setIdno(idno);
         customer.setName(name);
         customer.setPassword(password);
-        jpaDao.persist(customer);
+        addCustomer(customer);
     }
 
     @Override
