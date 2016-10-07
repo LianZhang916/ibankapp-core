@@ -17,13 +17,18 @@ import org.ibankapp.core.type.CustomerType;
 @Table(name = "CORE_CORPCUSTOMER")
 public class CorpCustomer extends Customer {
 
-    @Override
-    public CustomerType getType() {
-        return CustomerType.CORP;
+    public CorpCustomer(){
+        super();
+        this.setType(CustomerType.CORP);
     }
 
-    @Override
-    public void setType(CustomerType type) {
-        super.setType(CustomerType.CORP);
-    }
+//    @Override
+//    public CustomerType getType() {
+//        return CustomerType.CORP;
+//    }
+//
+//    @Override
+//    public void setType(CustomerType type) {
+//        super.setType(CustomerType.CORP);
+//    }
 }

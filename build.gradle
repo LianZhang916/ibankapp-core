@@ -24,9 +24,12 @@ repositories {
 dependencies{
     compile 'org.ibankapp:ibankapp-base:1.0.0-SNAPSHOT'
     testCompile 'junit:junit:4.11'
-    testCompile group: 'org.hibernate', name: 'hibernate-core', version: '4.3.11.Final'
+    testCompile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.3.Final'
     testCompile 'org.hibernate:hibernate-entitymanager:4.3.11.Final'
     testCompile group: 'com.h2database', name: 'h2', version: '1.4.192'
+    testCompile group:'javax.el',name:'javax.el-api',version:'2.2.4'
+    testCompile group: 'org.hibernate', name: 'hibernate-validator', version: '5.2.4.Final'
+//    testCompile group:'org.eclipse.persistence',name:'eclipselink',version:'2.5.0-RC1'
 }
 
 jacocoTestReport {

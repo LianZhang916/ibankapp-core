@@ -1,7 +1,8 @@
 package org.ibankapp.core.test;
 
+import org.ibankapp.base.exception.BaseException;
+import org.ibankapp.base.persistence.DefaultJpaDaoImpl;
 import org.ibankapp.base.persistence.IJpaDao;
-import org.ibankapp.base.persistence.JpaDaoImpl;
 import org.ibankapp.core.model.CorpCustomer;
 import org.ibankapp.core.model.Customer;
 import org.ibankapp.core.service.ICustomerService;
@@ -17,6 +18,7 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -74,7 +76,7 @@ public class CustomerServiceTest {
     /**
      * 测试客户ID号重复时的报错
      */
-    @Test(expected = EntityExistsException.class)
+    @Test(expected = BaseException.class)
     public void addCustomerIdDupTest() {
 
         Customer customer = new CorpCustomer();
@@ -112,7 +114,7 @@ public class CustomerServiceTest {
         EntityManagerFactory factory = Persistence.createEntityManagerFactory("ibankapp");
         EntityManager entityManager = factory.createEntityManager();
 
-        IJpaDao jpaDao = new JpaDaoImpl();
+        IJpaDao jpaDao = new DefaultJpaDaoImpl();
 
         jpaDao.setEntityManager(entityManager);
 

@@ -15,13 +15,18 @@ import javax.persistence.Table;
 @Table(name = "CORE_RETAILCUSTOMER")
 public class RetailCustomer extends Customer {
 
-    @Override
-    public CustomerType getType() {
-        return CustomerType.RETIAL;
+    public RetailCustomer(){
+        super();
+        this.setType(CustomerType.RETIAL);
     }
 
-    @Override
-    public void setType(CustomerType type) {
-        super.setType(CustomerType.RETIAL);
-    }
+//    @Override
+//    public CustomerType getType() {
+//        return CustomerType.RETIAL;
+//    }
+//
+//    @Override
+//    public void setType(CustomerType type) {
+//        super.setType(CustomerType.RETIAL);
+//    }
 }

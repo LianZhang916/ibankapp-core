@@ -10,5 +10,12 @@
             <property name="hibernate.show_sql" value="true" />
             <property name="hibernate.hbm2ddl.auto" value="update"/>
         </properties>
+        <!--<provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>-->
+        <!--<class>org.ibankapp.core.model.CorpCustomer</class>-->
+        <!--<properties>-->
+            <!--<property name="javax.persistence.transactionType" value="RESOURCE_LOCAL"/>-->
+            <!--<property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>-->
+            <!--<property name="javax.persistence.jdbc.url" value="jdbc:h2:mem:ibankapp"/>-->
+        <!--</properties>-->
     </persistence-unit>
 </persistence>

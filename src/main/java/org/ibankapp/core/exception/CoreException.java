@@ -1,7 +1,8 @@
 package org.ibankapp.core.exception;
 
 import org.ibankapp.base.exception.BaseException;
-import org.ibankapp.base.exception.PropertyUtil;
+import org.ibankapp.base.util.PropertyUtil;
+
 
 /**
  * 账务核心异常类

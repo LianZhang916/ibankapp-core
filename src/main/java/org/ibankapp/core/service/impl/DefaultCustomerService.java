@@ -59,7 +59,7 @@ public class DefaultCustomerService implements ICustomerService {
         }
 
         @SuppressWarnings("unchecked")
-        List<Customer> customers = (List<Customer>) jpaDao.createQuery(jpql);
+        List<Customer> customers = (List<Customer>) jpaDao.query(jpql).getResultList();
 
         return customers;
     }

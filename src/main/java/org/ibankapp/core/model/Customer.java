@@ -1,11 +1,13 @@
 package org.ibankapp.core.model;
 
-import javax.persistence.*;
-
 import org.ibankapp.base.persistence.Model;
 import org.ibankapp.core.type.CustomerType;
 import org.ibankapp.core.type.Idtp;
 import org.ibankapp.core.type.RecordStatus;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * 客户实体类的超类
@@ -19,16 +21,19 @@ public class Customer extends Model {
     /**
      * 证件种类
      */
+    @NotNull
     private Idtp idtp;
 
     /**
      * 证件号码
      */
+    @NotNull
     private String idno;
 
     /**
      * 客户名称
      */
+    @NotNull
     private String name;
 
     /**
@@ -44,16 +49,20 @@ public class Customer extends Model {
     /**
      * 客户密码
      */
+    @NotNull
+    @Size(min = 10)
     private String password;
 
     /**
      * 客户状态
      */
+    @NotNull
     private RecordStatus status;
 
     /**
      * 客户类型
      */
+    @NotNull
     private CustomerType type;
 
     /**
