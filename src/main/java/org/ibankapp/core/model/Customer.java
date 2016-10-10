@@ -1,6 +1,7 @@
 package org.ibankapp.core.model;
 
 import org.ibankapp.base.persistence.Model;
+import org.ibankapp.core.constraint.Identifier;
 import org.ibankapp.core.type.CustomerType;
 import org.ibankapp.core.type.Idtp;
 import org.ibankapp.core.type.RecordStatus;
@@ -15,25 +16,23 @@ import javax.validation.constraints.Size;
  * @author codelder
  * @version 1.0.0, 16/09/20
  */
+@Identifier(typefield = "idtp",numfield = "idno")
 @MappedSuperclass
 public class Customer extends Model {
 
     /**
      * 证件种类
      */
-    @NotNull
     private Idtp idtp;
 
     /**
      * 证件号码
      */
-    @NotNull
     private String idno;
 
     /**
      * 客户名称
      */
-    @NotNull
     private String name;
 
     /**
@@ -49,20 +48,16 @@ public class Customer extends Model {
     /**
      * 客户密码
      */
-    @NotNull
-    @Size(min = 10)
     private String password;
 
     /**
      * 客户状态
      */
-    @NotNull
     private RecordStatus status;
 
     /**
      * 客户类型
      */
-    @NotNull
     private CustomerType type;
 
     /**
@@ -78,6 +73,7 @@ public class Customer extends Model {
      * @return 邮箱地址
      */
     @Column(length = 128)
+    @Size(max = 128)
     public String getEmail() {
         return email;
     }
@@ -100,6 +96,8 @@ public class Customer extends Model {
             length = 64,
             nullable = false
     )
+    @NotNull
+    @Size(max = 64)
     public String getIdno() {
         return idno;
     }
@@ -123,6 +121,7 @@ public class Customer extends Model {
             length = 16,
             nullable = false
     )
+    @NotNull
     public Idtp getIdtp() {
         return idtp;
     }
@@ -142,6 +141,7 @@ public class Customer extends Model {
      * @return 手机号码
      */
     @Column(length = 20)
+    @Size(max = 20)
     public String getMobile() {
         return mobile;
     }
@@ -164,14 +164,16 @@ public class Customer extends Model {
             length = 128,
             nullable = false
     )
+    @NotNull
+    @Size(max = 128)
     public String getName() {
         return name;
     }
 
     /**
-     * 设置证件名称
+     * 设置客户名称
      *
-     * @param name 证件名称
+     * @param name 客户名称
      */
     public void setName(String name) {
         this.name = name;
@@ -186,6 +188,8 @@ public class Customer extends Model {
             length = 32,
             nullable = false
     )
+    @NotNull
+    @Size(max = 32)
     public String getPassword() {
         return password;
     }
@@ -209,6 +213,7 @@ public class Customer extends Model {
             length = 16,
             nullable = false
     )
+    @NotNull
     public RecordStatus getStatus() {
         return status;
     }
@@ -228,6 +233,7 @@ public class Customer extends Model {
      * @return 客户类型
      */
     @Transient
+    @NotNull
     public CustomerType getType() {
         return type;
     }

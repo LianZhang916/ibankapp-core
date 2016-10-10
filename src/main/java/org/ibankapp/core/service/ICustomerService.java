@@ -20,7 +20,6 @@ public interface ICustomerService {
      *
      * @param customer 客户对象
      */
-    @SuppressWarnings("unused")
     void addCustomer(Customer customer);
 
     /**
@@ -32,7 +31,6 @@ public interface ICustomerService {
      * @param name     客户名称
      * @param password 密码
      */
-    @SuppressWarnings("unused")
     void addCustomer(CustomerType type, Idtp idtp, String idno, String name, String password);
 
     /**
@@ -41,7 +39,6 @@ public interface ICustomerService {
      * @param type 客户类型
      * @return 客户信息列表
      */
-    @SuppressWarnings("unused")
     List<Customer> getAllCustomers(CustomerType type);
 
     /**
@@ -49,7 +46,6 @@ public interface ICustomerService {
      *
      * @return jpa持久化数据操作对象
      */
-    @SuppressWarnings("unused")
     IJpaDao getJpaDao();
 
     /**

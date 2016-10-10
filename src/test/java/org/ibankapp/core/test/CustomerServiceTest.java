@@ -43,8 +43,8 @@ public class CustomerServiceTest {
 
         jpaDao.beginTrans();
         customer.setIdtp(Idtp.IDCARD);
-        customer.setIdno("130404197602293014");
-        customer.setPassword("123456");
+        customer.setIdno("130404197602293015");
+//        customer.setPassword("1234567890");
         customer.setName("wangyue");
         customer.setStatus(RecordStatus.NORMAL);
 
