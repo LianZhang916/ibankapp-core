@@ -7,48 +7,39 @@
  * in the root directory or <http://www.apache.org/licenses/>.
  */
 
-group 'org.ibankapp'
-version '1.0.0-SNAPSHOT'
+subprojects {
 
-apply plugin: 'java'
-apply plugin: 'jacoco'
+    group 'org.ibankapp'
+    version '1.0.0-SNAPSHOT'
 
-allprojects {
+    apply plugin: 'java'
+    apply plugin: 'jacoco'
+    apply plugin: 'idea'
+
     gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
             options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
         }
     }
-}
 
-
-configurations.all {
-    resolutionStrategy.cacheChangingModulesFor 1, 'minutes'
-}
-
-repositories {
-    mavenCentral()
-    maven {
-        url "https://oss.sonatype.org/content/groups/public"
+    repositories {
+        mavenCentral()
+        maven {
+            url "https://oss.sonatype.org/content/groups/public"
+        }
     }
-}
 
-dependencies{
-    compile 'org.ibankapp:ibankapp-base:1.0.0-SNAPSHOT'
-    testCompile 'junit:junit:4.11'
-    testCompile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.3.Final'
-    testCompile 'org.hibernate:hibernate-entitymanager:5.2.3.Final'
-    testCompile group: 'com.h2database', name: 'h2', version: '1.4.192'
-    testCompile group:'javax.el',name:'javax.el-api',version:'2.2.4'
-    testCompile group: 'org.hibernate', name: 'hibernate-validator', version: '5.2.4.Final'
-//    testCompile group:'org.eclipse.persistence',name:'eclipselink',version:'2.5.0-RC1'
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled = true
-        html.enabled = true
+    configurations.all {
+        resolutionStrategy.cacheChangingModulesFor 1, 'minutes'
     }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true
+            html.enabled = true
+        }
+    }
+
+    check.dependsOn jacocoTestReport
 }
 
-check.dependsOn jacocoTestReport
