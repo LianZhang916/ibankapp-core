@@ -9,24 +9,20 @@
 
 package org.ibankapp.core.customer.service;
 
+import org.ibankapp.base.persistence.domain.Sort;
 import org.ibankapp.base.validation.type.Idtp;
-import org.ibankapp.core.customer.model.CorpCustomer;
-import org.ibankapp.core.customer.model.RetailCustomer;
+import org.ibankapp.core.customer.model.Customer;
+import org.ibankapp.core.customer.specification.CustomerSpecification;
+import org.ibankapp.core.customer.type.CustomerType;
+
+import java.util.List;
 
 public interface ICustomerService {
 
-    void createCorpCustomer(Idtp idtp, String idno, String name, String email, String mobile);
+    void createCustomer(CustomerType customerType, Idtp idtp, String idno, String name, String email, String mobile);
 
-    void createRetailCustomer(Idtp idtp, String idno, String name, String email, String mobile);
+    void removeCustomer(String customerId);
 
-    void createCorpCustomer(CorpCustomer customer);
-
-    void createRetailCustomer(RetailCustomer customer);
-
-    void removeCorpCustomer(String customerId);
-
-    void removeRetailCustomer(String customerId);
-
-    void removeAll();
+    <T extends Customer> List<T> getCustomers(Class<T> entityClass, CustomerSpecification<T> spec, Sort sort);
 
 }

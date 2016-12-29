@@ -13,11 +13,11 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
 import org.ibankapp.base.observer.EventRegister;
-import org.ibankapp.base.springdata.repository.BaseJpaRepositoryImpl;
+import org.ibankapp.base.persistence.repository.JpaRepository;
+import org.ibankapp.base.persistence.repository.JpaRepositoryImpl;
 import org.ibankapp.core.customer.service.CustomerService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
@@ -30,10 +30,6 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(
-        basePackages = {"org.ibankapp.core"},
-        repositoryBaseClass = BaseJpaRepositoryImpl.class
-)
 public class TestConfigContext {
 
     @Bean
@@ -64,6 +60,10 @@ public class TestConfigContext {
 
     }
 
+    @Bean
+    JpaRepository repository(){
+        return new JpaRepositoryImpl();
+    }
     @Bean
     EventRegister register(){
         return new EventRegister();

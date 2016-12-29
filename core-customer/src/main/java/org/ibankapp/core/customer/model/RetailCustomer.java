@@ -29,7 +29,6 @@ import javax.validation.constraints.NotNull;
  * @version 1.0.0, 16/09/22
  */
 @Entity
-@Table(name = "CORE_RETAILCUSTOMER",uniqueConstraints = @UniqueConstraint(columnNames = {"idtp", "idno"}))
 @DiscriminatorValue("RETAIL")
 public class RetailCustomer extends Customer {
 

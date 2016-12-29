@@ -9,10 +9,9 @@
 
 package org.ibankapp.core.customer.model;
 
-import org.ibankapp.base.persistence.model.Model;
+import org.ibankapp.base.persistence.validation.constraint.Unique;
+import org.ibankapp.base.persistence.validation.constraint.Uniques;
 import org.ibankapp.base.validation.constraint.Identifier;
-import org.ibankapp.base.validation.constraint.Unique;
-import org.ibankapp.base.validation.constraint.Uniques;
 import org.ibankapp.base.validation.type.Idtp;
 
 import javax.persistence.Column;
@@ -20,7 +19,10 @@ import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,15 +32,21 @@ import javax.validation.constraints.Size;
  * @author codelder
  * @version 1.0.0, 16/09/20
  */
+
 @Entity
+@Table(name = "CORE_CUSTOMER",uniqueConstraints = @UniqueConstraint(columnNames = {"idtp", "idno"}))
 @Identifier(typefield = "idtp", codefield = "idno")
 @Uniques(constraints = {@Unique(properties = "email", message = "该邮箱已被注册"),
         @Unique(properties = "mobile", message = "该手机已被注册"),
         @Unique(properties = {"idtp", "idno"}, message = "该证件已被注册")})
 @Inheritance
 @DiscriminatorColumn(name = "type")
-public class Customer extends Model {
+public class Customer {
 
+    /**
+     * 客户号
+     */
+    private String id;
     /**
      * 证件种类
      */
@@ -64,9 +72,19 @@ public class Customer extends Model {
      */
     private String mobile;
 
-    @Override
-    public String generateId() {
-        return String.format("%16d", System.nanoTime() / 1000);
+
+    public Customer() {
+        this.id = String.format("%16d", System.nanoTime() / 1000);
+    }
+
+    @Id
+    @Column(length = 16)
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**

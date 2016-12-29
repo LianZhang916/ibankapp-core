@@ -10,9 +10,12 @@
 package org.ibankapp.core.customer.constraint.test;
 
 import org.ibankapp.base.exception.BaseException;
+import org.ibankapp.base.persistence.repository.JpaRepository;
 import org.ibankapp.base.validation.type.Idtp;
 import org.ibankapp.core.customer.configure.test.TestConfigContext;
+import org.ibankapp.core.customer.model.Customer;
 import org.ibankapp.core.customer.service.ICustomerService;
+import org.ibankapp.core.customer.type.CustomerType;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -27,15 +30,16 @@ import javax.annotation.Resource;
 @ContextConfiguration(classes = {TestConfigContext.class})
 public class ConstraintTest {
 
-    @Resource
-    private ICustomerService customerService;
-
     @Rule
     public ExpectedException thrown = ExpectedException.none();
+    @Resource
+    private ICustomerService customerService;
+    @Resource
+    private JpaRepository repository;
 
     @After
     public void clear() {
-        customerService.removeAll();
+        repository.deleteAll(Customer.class);
     }
 
     @Test
@@ -45,7 +49,38 @@ public class ConstraintTest {
         thrown.expectMessage("证件类型与客户类型不匹配");
         thrown.expectMessage("证件号码不合法");
 
-        customerService.createCorpCustomer(Idtp.IDCARD, "911202246818640656", "交行",
+        customerService.createCustomer(CustomerType.CORP, Idtp.IDCARD, "911202246818640656", "交行",
+                "wangyued@126.com", "13901171063");
+    }
+
+    @Test
+    public void testValidator1() {
+
+        thrown.expect(BaseException.class);
+        thrown.expectMessage("证件类型与客户类型不匹配");
+
+        customerService.createCustomer(CustomerType.RETIAL,Idtp.USCIC, "911202246818640656", "交行",
+                "wangyued@126.com", "13901171063");
+    }
+
+    @Test
+    public void testValidator2() {
+
+        thrown.expect(BaseException.class);
+        thrown.expectMessage("证件类型与客户类型不匹配");
+
+        customerService.createCustomer(CustomerType.CORP, Idtp.PASSPORT, "911202246818640656", "交行",
+                "wangyued@126.com", "13901171063");
+    }
+
+    @Test
+    public void testValidator3() {
+
+        thrown.expect(BaseException.class);
+        thrown.expectMessage("证件类型与客户类型不匹配");
+        thrown.expectMessage("证件号码不合法");
+
+        customerService.createCustomer(CustomerType.RETIAL,Idtp.OCC,"911202246818640656", "交行",
                 "wangyued@126.com", "13901171063");
     }
 

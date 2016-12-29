@@ -9,85 +9,36 @@
 
 package org.ibankapp.core.customer.service;
 
+import org.ibankapp.base.persistence.domain.Sort;
+import org.ibankapp.base.persistence.repository.JpaRepository;
 import org.ibankapp.base.validation.type.Idtp;
-import org.ibankapp.core.customer.event.CorpCustomerRemovedEvent;
-import org.ibankapp.core.customer.event.RetailCustomerRemovedEvent;
 import org.ibankapp.core.customer.model.CorpCustomer;
 import org.ibankapp.core.customer.model.Customer;
 import org.ibankapp.core.customer.model.RetailCustomer;
-import org.ibankapp.core.customer.repository.CorpCustomerRepository;
-import org.ibankapp.core.customer.repository.RetailCustomerRepository;
-import org.springframework.context.ApplicationContext;
+import org.ibankapp.core.customer.specification.CustomerSpecification;
+import org.ibankapp.core.customer.type.CustomerType;
+
+import java.util.List;
 
 import javax.annotation.Resource;
 
 public class CustomerService implements ICustomerService {
 
     @Resource
-    private CorpCustomerRepository corpCustomerRepository;
-
-    @Resource
-    private RetailCustomerRepository retailCustomerRepository;
-
-    @Resource
-    private ApplicationContext applicationContext;
+    private JpaRepository repository;
 
     @Override
-    public void createCorpCustomer(Idtp idtp, String idno, String name, String email, String mobile) {
+    public void createCustomer(CustomerType customerType, Idtp idtp, String idno, String name, String email, String
+            mobile) {
 
-        CorpCustomer customer = new CorpCustomer();
 
-        createCustomer(customer, idtp, idno, name, email, mobile);
+        Customer customer;
 
-        createCorpCustomer(customer);
-    }
-
-    @Override
-    public void createRetailCustomer(Idtp idtp, String idno, String name, String email, String mobile) {
-
-        RetailCustomer customer = new RetailCustomer();
-
-        createCustomer(customer, idtp, idno, name, email, mobile);
-
-        createRetailCustomer(customer);
-    }
-
-    @Override
-    public void createCorpCustomer(CorpCustomer customer) {
-        corpCustomerRepository.save(customer);
-    }
-
-    @Override
-    public void createRetailCustomer(RetailCustomer customer) {
-        retailCustomerRepository.save(customer);
-    }
-
-    @Override
-    public void removeCorpCustomer(String customerId) {
-        CorpCustomer customer = corpCustomerRepository.findOne(customerId);
-        corpCustomerRepository.delete(customerId);
-        CorpCustomerRemovedEvent event = new CorpCustomerRemovedEvent(this);
-        event.setCustomer(customer);
-        applicationContext.publishEvent(event);
-    }
-
-    @Override
-    public void removeRetailCustomer(String customerId) {
-        RetailCustomer customer = retailCustomerRepository.findOne(customerId);
-        retailCustomerRepository.delete(customerId);
-        RetailCustomerRemovedEvent event = new RetailCustomerRemovedEvent(this);
-        event.setCustomer(customer);
-        applicationContext.publishEvent(event);
-    }
-
-    @Override
-    public void removeAll() {
-        retailCustomerRepository.deleteAll();
-        corpCustomerRepository.deleteAll();
-    }
-
-    private <T extends Customer> T createCustomer(T customer, Idtp idtp, String idno, String name,
-                                                  String email, String mobile) {
+        if (customerType.equals(CustomerType.CORP)) {
+            customer = new CorpCustomer();
+        } else {
+            customer = new RetailCustomer();
+        }
 
         customer.setName(name);
         customer.setMobile(mobile);
@@ -95,6 +46,23 @@ public class CustomerService implements ICustomerService {
         customer.setIdno(idno);
         customer.setIdtp(idtp);
 
-        return customer;
+        createCustomer(customer);
     }
+
+    private void createCustomer(Customer customer) {
+        repository.persist(customer);
+    }
+
+    @Override
+    public void removeCustomer(String customerId) {
+        repository.delete(Customer.class, customerId);
+    }
+
+    //    @Override
+    public <T extends Customer> List<T> getCustomers(Class<T> entityClass, CustomerSpecification<T> spec, Sort sort) {
+
+        return repository.findAll(entityClass, spec, sort);
+    }
+
+
 }
