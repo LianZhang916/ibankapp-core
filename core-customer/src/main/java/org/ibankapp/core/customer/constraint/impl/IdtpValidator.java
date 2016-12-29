@@ -35,6 +35,6 @@ public class IdtpValidator implements ConstraintValidator<CustomerIdtp,Idtp> {
         if (type.equals(CustomerType.RETIAL))
             return value.equals(IDCARD) || value.equals(PASSPORT);
         else
-            return type.equals(CustomerType.CORP) && (value.equals(OCC) || value.equals(USCIC));
+            return value.equals(OCC) || value.equals(USCIC);
     }
 }

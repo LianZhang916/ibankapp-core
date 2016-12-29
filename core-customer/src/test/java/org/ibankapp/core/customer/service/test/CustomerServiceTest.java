@@ -85,10 +85,10 @@ public class CustomerServiceTest {
 
         CustomerType customerType = CustomerType.CORP;
 
-        customerService.createCustomer(customerType, Idtp.USCIC, "911202246818640656", "交行",
+        customerService.createCustomer(customerType, Idtp.OCC, "681864065", "交行",
                 "wangyued@126.com", "13901171063");
 
-        customerService.createCustomer(CustomerType.RETIAL, Idtp.IDCARD, "130404197602293014", "交通银行",
+        customerService.createCustomer(CustomerType.RETIAL, Idtp.PASSPORT, "130404197602293014", "交通银行",
                 "wangyued@126.com", "13901171063");
 
         Customer customer = new Customer();
@@ -128,7 +128,7 @@ public class CustomerServiceTest {
 
         Assert.assertEquals(1, customers.size());
 
-        Idtp idtp = Idtp.IDCARD;
+        Idtp idtp = Idtp.PASSPORT;
 
         customer.setIdtp(idtp);
 
