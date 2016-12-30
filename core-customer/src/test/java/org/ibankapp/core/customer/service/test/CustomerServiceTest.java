@@ -105,7 +105,48 @@ public class CustomerServiceTest {
         customerService.updateCustomer(customer);
         customers = repository.findAll(Customer.class);
 
-        Assert.assertEquals("交通银行",customers.get(0).getName());
+        Assert.assertEquals("交通银行", customers.get(0).getName());
+
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateWithNewCustomer() {
+
+        testCreateCustomer();
+
+        List<Customer> customers = repository.findAll(Customer.class);
+
+        CorpCustomer customer = new CorpCustomer();
+        customer.setId(customers.get(0).getId());
+        customer.setIdtp(Idtp.USCIC);
+        customer.setIdno("911202246818640656");
+        customer.setName("交行");
+        customer.setEmail("wangyue@126.com");
+        customer.setMobile("13901171063");
+
+        customerService.updateCustomer(customer);
+
+        customers = repository.findAll(Customer.class);
+
+        Assert.assertEquals("wangyue@126.com", customers.get(0).getEmail());
+
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateCustomerNoId() {
+
+        thrown.expect(IllegalArgumentException.class);
+
+        CorpCustomer customer = new CorpCustomer();
+        customer.setIdtp(Idtp.USCIC);
+        customer.setIdno("911202246818640656");
+        customer.setName("交行");
+        customer.setEmail("wangyued@126.com");
+        customer.setMobile("13901171063");
+
+        customerService.updateCustomer(customer);
 
     }
 
