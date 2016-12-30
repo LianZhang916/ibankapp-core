@@ -13,16 +13,21 @@ import org.ibankapp.base.persistence.domain.Sort;
 import org.ibankapp.base.validation.type.Idtp;
 import org.ibankapp.core.customer.model.Customer;
 import org.ibankapp.core.customer.specification.CustomerSpecification;
-import org.ibankapp.core.customer.type.CustomerType;
 
 import java.util.List;
 
 public interface ICustomerService {
 
-    void createCustomer(CustomerType customerType, Idtp idtp, String idno, String name, String email, String mobile);
+    <T extends Customer> void createCustomer(Class<T> entityClass, Idtp idtp, String idno, String name, String email,
+                                             String mobile);
+
+    <T extends Customer> void createCustomer(T customer);
+
+    <T extends Customer> void updateCustomer(T customer);
 
     void removeCustomer(String customerId);
 
     <T extends Customer> List<T> getCustomers(Class<T> entityClass, CustomerSpecification<T> spec, Sort sort);
 
+    <T extends Customer> T getCustomer(Class<T> entityClass, String customerId);
 }

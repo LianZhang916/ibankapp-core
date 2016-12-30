@@ -13,9 +13,10 @@ import org.ibankapp.base.exception.BaseException;
 import org.ibankapp.base.persistence.repository.JpaRepository;
 import org.ibankapp.base.validation.type.Idtp;
 import org.ibankapp.core.customer.configure.test.TestConfigContext;
+import org.ibankapp.core.customer.model.CorpCustomer;
 import org.ibankapp.core.customer.model.Customer;
+import org.ibankapp.core.customer.model.RetailCustomer;
 import org.ibankapp.core.customer.service.ICustomerService;
-import org.ibankapp.core.customer.type.CustomerType;
 import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,7 +50,7 @@ public class ConstraintTest {
         thrown.expectMessage("证件类型与客户类型不匹配");
         thrown.expectMessage("证件号码不合法");
 
-        customerService.createCustomer(CustomerType.CORP, Idtp.IDCARD, "911202246818640656", "交行",
+        customerService.createCustomer(CorpCustomer.class, Idtp.IDCARD, "911202246818640656", "交行",
                 "wangyued@126.com", "13901171063");
     }
 
@@ -59,7 +60,7 @@ public class ConstraintTest {
         thrown.expect(BaseException.class);
         thrown.expectMessage("证件类型与客户类型不匹配");
 
-        customerService.createCustomer(CustomerType.RETIAL,Idtp.USCIC, "911202246818640656", "交行",
+        customerService.createCustomer(RetailCustomer.class,Idtp.USCIC, "911202246818640656", "交行",
                 "wangyued@126.com", "13901171063");
     }
 
@@ -69,7 +70,7 @@ public class ConstraintTest {
         thrown.expect(BaseException.class);
         thrown.expectMessage("证件类型与客户类型不匹配");
 
-        customerService.createCustomer(CustomerType.CORP, Idtp.PASSPORT, "911202246818640656", "交行",
+        customerService.createCustomer(CorpCustomer.class, Idtp.PASSPORT, "911202246818640656", "交行",
                 "wangyued@126.com", "13901171063");
     }
 
@@ -80,7 +81,7 @@ public class ConstraintTest {
         thrown.expectMessage("证件类型与客户类型不匹配");
         thrown.expectMessage("证件号码不合法");
 
-        customerService.createCustomer(CustomerType.RETIAL,Idtp.OCC,"911202246818640656", "交行",
+        customerService.createCustomer(RetailCustomer.class,Idtp.OCC,"911202246818640656", "交行",
                 "wangyued@126.com", "13901171063");
     }
 

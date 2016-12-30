@@ -21,6 +21,7 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
@@ -34,7 +35,7 @@ import javax.validation.constraints.Size;
  */
 
 @Entity
-@Table(name = "CORE_CUSTOMER",uniqueConstraints = @UniqueConstraint(columnNames = {"idtp", "idno"}))
+@Table(name = "CORE_CUSTOMER", uniqueConstraints = @UniqueConstraint(columnNames = {"idtp", "idno"}))
 @Identifier(typefield = "idtp", codefield = "idno")
 @Uniques(constraints = {@Unique(properties = "email", message = "该邮箱已被注册"),
         @Unique(properties = "mobile", message = "该手机已被注册"),
@@ -72,9 +73,10 @@ public class Customer {
      */
     private String mobile;
 
-
-    public Customer() {
-        this.id = String.format("%16d", System.nanoTime() / 1000);
+    @PrePersist
+    public void ensureId() {
+        if (this.id == null)
+            this.id = String.format("%16d", System.nanoTime() / 1000);
     }
 
     @Id
