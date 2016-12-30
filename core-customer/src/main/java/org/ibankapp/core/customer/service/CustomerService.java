@@ -12,11 +12,8 @@ package org.ibankapp.core.customer.service;
 import org.ibankapp.base.persistence.domain.Sort;
 import org.ibankapp.base.persistence.repository.JpaRepository;
 import org.ibankapp.base.validation.type.Idtp;
-import org.ibankapp.core.customer.model.CorpCustomer;
 import org.ibankapp.core.customer.model.Customer;
-import org.ibankapp.core.customer.model.RetailCustomer;
 import org.ibankapp.core.customer.specification.CustomerSpecification;
-import org.ibankapp.core.customer.type.CustomerType;
 
 import java.util.List;
 
@@ -28,16 +25,15 @@ public class CustomerService implements ICustomerService {
     private JpaRepository repository;
 
     @Override
-    public void createCustomer(CustomerType customerType, Idtp idtp, String idno, String name, String email, String
-            mobile) {
-
+    public <T extends Customer> void createCustomer(Class<T> entityClass, Idtp idtp, String idno, String name, String
+            email, String mobile) {
 
         Customer customer;
 
-        if (customerType.equals(CustomerType.CORP)) {
-            customer = new CorpCustomer();
-        } else {
-            customer = new RetailCustomer();
+        try {
+            customer = entityClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException e) {
+            throw new RuntimeException(e);
         }
 
         customer.setName(name);
@@ -49,8 +45,14 @@ public class CustomerService implements ICustomerService {
         createCustomer(customer);
     }
 
-    private void createCustomer(Customer customer) {
+    @Override
+    public <T extends Customer> void createCustomer(T customer) {
         repository.persist(customer);
+    }
+
+    @Override
+    public <T extends Customer> void updateCustomer(T customer) {
+        repository.merge(customer);
     }
 
     @Override
@@ -62,6 +64,13 @@ public class CustomerService implements ICustomerService {
     public <T extends Customer> List<T> getCustomers(Class<T> entityClass, CustomerSpecification<T> spec, Sort sort) {
 
         return repository.findAll(entityClass, spec, sort);
+    }
+
+    @Override
+    public <T extends Customer> T getCustomer(Class<T> entityClass, String customerId) {
+
+        return repository.findOne(entityClass, customerId);
+
     }
 
 

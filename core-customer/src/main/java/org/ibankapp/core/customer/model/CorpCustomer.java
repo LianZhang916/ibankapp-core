@@ -11,15 +11,12 @@ package org.ibankapp.core.customer.model;
 
 import org.ibankapp.base.validation.type.Idtp;
 import org.ibankapp.core.customer.constraint.CustomerIdtp;
-import org.ibankapp.core.customer.type.CustomerType;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -33,7 +30,7 @@ import javax.validation.constraints.NotNull;
 public class CorpCustomer extends Customer {
 
     @Override
-    @CustomerIdtp(type = CustomerType.CORP)
+    @CustomerIdtp(type = CorpCustomer.class)
     @Column(
             length = 16,
             nullable = false,

@@ -14,12 +14,14 @@ import org.ibankapp.base.validation.type.Idtp;
 import org.ibankapp.core.customer.configure.test.TestConfigContext;
 import org.ibankapp.core.customer.model.CorpCustomer;
 import org.ibankapp.core.customer.model.Customer;
+import org.ibankapp.core.customer.model.RetailCustomer;
 import org.ibankapp.core.customer.service.ICustomerService;
 import org.ibankapp.core.customer.specification.CustomerSpecification;
-import org.ibankapp.core.customer.type.CustomerType;
 import org.junit.After;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -40,6 +42,9 @@ import javax.annotation.Resource;
 @ContextConfiguration(classes = {TestConfigContext.class})
 public class CustomerServiceTest {
 
+    @Rule
+    public ExpectedException thrown = ExpectedException.none();
+
     @Resource
     private ICustomerService customerService;
 
@@ -51,10 +56,63 @@ public class CustomerServiceTest {
         repository.deleteAll(Customer.class);
     }
 
+
+    @Test
+    @Transactional
+    public void testCreateCustomer() {
+        CorpCustomer customer = new CorpCustomer();
+        customer.setIdtp(Idtp.USCIC);
+        customer.setIdno("911202246818640656");
+        customer.setName("交行");
+        customer.setEmail("wangyued@126.com");
+        customer.setMobile("13901171063");
+
+        Assert.assertNull(customer.getId());
+
+        customerService.createCustomer(customer);
+        List<Customer> customers = repository.findAll(Customer.class);
+        Assert.assertEquals(1, customers.size());
+        Assert.assertEquals(16, customers.get(0).getId().length());
+
+
+    }
+
+    @Test
+    @Transactional
+    public void testCreateCustomerWithId() {
+        CorpCustomer customer = new CorpCustomer();
+        customer.setId("01");
+        customer.setIdtp(Idtp.USCIC);
+        customer.setIdno("911202246818640656");
+        customer.setName("交行");
+        customer.setEmail("wangyued@126.com");
+        customer.setMobile("13901171063");
+
+        customerService.createCustomer(customer);
+        List<Customer> customers = repository.findAll(Customer.class);
+        Assert.assertEquals(1, customers.size());
+        Assert.assertEquals("01", customers.get(0).getId());
+    }
+
+    @Test
+    @Transactional
+    public void testUpdateCustomer() {
+        testCreateCustomer();
+        List<Customer> customers = repository.findAll(Customer.class);
+        Customer customer = customers.get(0);
+
+        customer.setName("交通银行");
+        customerService.updateCustomer(customer);
+        customers = repository.findAll(Customer.class);
+
+        Assert.assertEquals("交通银行",customers.get(0).getName());
+
+    }
+
     @Test
     @Transactional
     public void testCreateCorpCustomer() {
-        customerService.createCustomer(CustomerType.CORP, Idtp.USCIC, "911202246818640656", "交行",
+        customerService.createCustomer(CorpCustomer.class, Idtp.USCIC, "911202246818640656", "交行",
                 "wangyued@126.com", "13901171063");
         List<Customer> customers = repository.findAll(Customer.class);
         Assert.assertEquals(1, customers.size());
@@ -64,7 +122,7 @@ public class CustomerServiceTest {
     @Test
     @Transactional
     public void testCreateRetailCustomer() {
-        customerService.createCustomer(CustomerType.RETIAL, Idtp.IDCARD, "130404197602293014", "交行",
+        customerService.createCustomer(RetailCustomer.class, Idtp.IDCARD, "130404197602293014", "交行",
                 "wangyued@126.com", "13901171063");
     }
 
@@ -83,12 +141,11 @@ public class CustomerServiceTest {
     @Transactional
     public void testGetCustomers() {
 
-        CustomerType customerType = CustomerType.CORP;
 
-        customerService.createCustomer(customerType, Idtp.OCC, "681864065", "交行",
+        customerService.createCustomer(CorpCustomer.class, Idtp.OCC, "681864065", "交行",
                 "wangyued@126.com", "13901171063");
 
-        customerService.createCustomer(CustomerType.RETIAL, Idtp.PASSPORT, "130404197602293014", "交通银行",
+        customerService.createCustomer(RetailCustomer.class, Idtp.PASSPORT, "130404197602293014", "交通银行",
                 "wangyued@126.com", "13901171063");
 
         Customer customer = new Customer();
@@ -98,6 +155,9 @@ public class CustomerServiceTest {
         List<Customer> customers = customerService.getCustomers(Customer.class, customerSpecification, null);
 
         Assert.assertEquals(1, customers.size());
+
+        customers = customerService.getCustomers(Customer.class, null, null);
+        Assert.assertEquals(2, customers.size());
 
         customer = new Customer();
         customer.setMobile("1063");
@@ -153,5 +213,41 @@ public class CustomerServiceTest {
         Assert.assertEquals(1, corpcustomers.size());
 
     }
+
+    @Test
+    @Transactional
+    public void testGetCustomer() {
+        customerService.createCustomer(CorpCustomer.class, Idtp.OCC, "681864065", "交行",
+                "wangyued@126.com", "13901171063");
+
+        customerService.createCustomer(RetailCustomer.class, Idtp.PASSPORT, "130404197602293014", "交通银行",
+                "wangyued@126.com", "13901171063");
+
+        RetailCustomer customer = new RetailCustomer();
+        customer.setIdno("3014");
+
+        CustomerSpecification<RetailCustomer> customerSpecification = new CustomerSpecification<>(customer);
+        List<RetailCustomer> customers = customerService.getCustomers(RetailCustomer.class, customerSpecification,
+                null);
+
+        String custoemrId = customers.get(0).getId();
+
+        RetailCustomer retailCustomer = customerService.getCustomer(RetailCustomer.class, custoemrId);
+
+        Assert.assertEquals("交通银行", retailCustomer.getName());
+
+    }
+
+    @Test
+    @Transactional
+    public void testInstantiationException() {
+
+        thrown.expect(RuntimeException.class);
+
+        customerService.createCustomer(TestCustomer.class, Idtp.OCC, "681864065", "交行",
+                "wangyued@126.com", "13901171063");
+
+    }
+
 
 }

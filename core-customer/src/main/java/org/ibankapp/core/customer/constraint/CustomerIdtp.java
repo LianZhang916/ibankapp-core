@@ -10,7 +10,7 @@
 package org.ibankapp.core.customer.constraint;
 
 import org.ibankapp.core.customer.constraint.impl.IdtpValidator;
-import org.ibankapp.core.customer.type.CustomerType;
+import org.ibankapp.core.customer.model.Customer;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
@@ -35,6 +35,6 @@ public @interface CustomerIdtp {
 
     Class<? extends Payload>[] payload() default {};
 
-    CustomerType type();
+    Class<? extends Customer> type();
 
 }
