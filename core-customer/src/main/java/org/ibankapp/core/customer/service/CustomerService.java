@@ -11,6 +11,7 @@ package org.ibankapp.core.customer.service;
 
 import org.ibankapp.base.persistence.domain.Sort;
 import org.ibankapp.base.persistence.repository.JpaRepository;
+import org.ibankapp.base.util.StringUtils;
 import org.ibankapp.base.validation.type.Idtp;
 import org.ibankapp.core.customer.model.Customer;
 import org.ibankapp.core.customer.specification.CustomerSpecification;
@@ -52,6 +53,9 @@ public class CustomerService implements ICustomerService {
 
     @Override
     public <T extends Customer> void updateCustomer(T customer) {
+        if (StringUtils.isEmpty(customer.getId())) {
+            throw new IllegalArgumentException("更新customer需要提供ID");
+        }
         repository.merge(customer);
     }
 
